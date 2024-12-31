@@ -26,17 +26,29 @@ CREATE TABLE categorie (
 );
 
 CREATE TABLE vehicule (
-    id_vehicule INT PRIMARY KEY AUTO_INCREMENT,
+    id_vehicule INT NOT null AUTO_INCREMENT PRIMARY KEY,
     modele VARCHAR(250) NOT NULL,
     marque VARCHAR(250) NOT NULL,
     prix_par_jour float NOT NULL,
-    disponibilite BOOLEAN DEFAULT TRUE,
-    categorie_id INT,
-    imageUrl VARCHAR(255),
-    description TEXT,
+    disponibilite BOOLEAN DEFAULT TRUE NOT null,
+    id_categorie INT,
+    imageUrl VARCHAR(255) not null,
+    description TEXT NOT null,
     km float NOT null,
     consom varchar(50) NOT null,
     annee int NOT null,
     place int NOT null,
-    FOREIGN KEY (categorie_id) REFERENCES categorie(id) ON DELETE SET NULL
+    FOREIGN KEY (id_categorie) REFERENCES categorie(id_categorie) ON DELETE SET NULL
+);
+
+CREATE TABLE reservations (
+    id_reservation INT NOT null AUTO_INCREMENT PRIMARY KEY,
+    id_user INT NOT null,
+    id_vehicule INT NOT null,
+    date_reser DATE NOT NULL,
+    heure_reser time not null,
+    lieu_reser VARCHAR(100) NOT null,
+    statut ENUM('En attente', 'Confirmée', 'Annulée') DEFAULT 'En attente',
+    FOREIGN KEY (id_user) REFERENCES usersite(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE
 );
