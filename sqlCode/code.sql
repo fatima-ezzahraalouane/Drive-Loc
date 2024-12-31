@@ -18,3 +18,9 @@ CREATE TABLE usersite (
     id_role int NOT null,
     FOREIGN KEY (id_role) REFERENCES role(id_role)
 );
+
+CREATE TABLE categorie (
+    id_categorie int NOT null AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(250) NOT NULL UNIQUE,
+    description VARCHAR(250) NOT NULL UNIQUE
+);gi
