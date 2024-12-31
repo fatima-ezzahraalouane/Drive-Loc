@@ -48,7 +48,8 @@ CREATE TABLE reservations (
     date_reser DATE NOT NULL,
     heure_reser time not null,
     lieu_reser VARCHAR(100) NOT null,
-    statut ENUM('En attente', 'Confirmée', 'Annulée') DEFAULT 'En attente',
+    statut ENUM('En attente', 'Confirmée', 'Annulée') DEFAULT 'En attente' not null,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES usersite(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE
 );
