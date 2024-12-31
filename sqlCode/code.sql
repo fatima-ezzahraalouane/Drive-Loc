@@ -52,3 +52,14 @@ CREATE TABLE reservations (
     FOREIGN KEY (id_user) REFERENCES usersite(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE
 );
+
+CREATE TABLE avis (
+    id_avis INT NOT null AUTO_INCREMENT PRIMARY KEY,
+    id_user INT NOT null,
+    id_vehicule INT NOT null,
+    commentaire TEXT NOT null,
+    note INT CHECK (note BETWEEN 1 AND 5) NOT null,
+    soft_delete BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (id_user) REFERENCES usersite(id_user) ON DELETE CASCADE,
+    FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE
+);
