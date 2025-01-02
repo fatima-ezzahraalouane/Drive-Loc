@@ -19,22 +19,22 @@ try {
     die("Erreur lors de la récupération des catégories : " . $e->getMessage());
 }
 
-try {
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Location']) && !empty($_POST['Location'])) {
-        $categorie_id = $_POST['Location'];
-        $query = "SELECT * FROM vehicule WHERE id_categorie = :categorie_id";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':categorie_id', $categorie_id, PDO::PARAM_INT);
-    } else {
-        $query = "SELECT * FROM vehicule";
-        $stmt = $conn->prepare($query);
-    }
+// try {
+//     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Location']) && !empty($_POST['Location'])) {
+//         $categorie_id = $_POST['Location'];
+//         $query = "SELECT * FROM vehicule WHERE id_categorie = :categorie_id";
+//         $stmt = $conn->prepare($query);
+//         $stmt->bindParam(':categorie_id', $categorie_id, PDO::PARAM_INT);
+//     } else {
+//         $query = "SELECT * FROM vehicule";
+//         $stmt = $conn->prepare($query);
+//     }
 
-    $stmt->execute();
-    $vehicules_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Erreur lors de la récupération des véhicules : " . $e->getMessage());
-}
+//     $stmt->execute();
+//     $vehicules_result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// } catch (PDOException $e) {
+//     die("Erreur lors de la récupération des véhicules : " . $e->getMessage());
+// }
 ?>
 
 
@@ -203,7 +203,7 @@ try {
     <!-- Header Start -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
-            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Nos véhicules</h4>
+            <h4 class="text-white display-4 mb-4 wow fadeInDown" data-wow-delay="0.1s">Nos Véhicules</h4>
             <ol class="breadcrumb d-flex justify-content-center mb-0 wow fadeInDown" data-wow-delay="0.3s">
                 <li class="breadcrumb-item"><a href="accueil.php">Accueil</a></li>
                 <!-- <li class="breadcrumb-item"><a href="#">Pages</a></li> -->
@@ -217,19 +217,23 @@ try {
     <div class="container-fluid categories py-5">
         <div class="container py-5">
             <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-                <h1 class="display-5 text-capitalize mb-3">Vehicle <span class="text-primary">Categories</span></h1>
-                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut amet nemo expedita asperiores commodi accusantium at cum harum, excepturi, quia tempora cupiditate! Adipisci facilis modi quisquam quia distinctio,
-                </p>
+                <h1 class="display-5 text-capitalize mb-3">Catégories de <span class="text-primary">Véhicules</span></h1>
+                <p class="mb-0">Chez Drive & Loc, nous offrons une gamme variée de véhicules pour répondre à tous vos besoins.</p>
             </div>
             <!-- Filter and Search Bar -->
             <div class="filter-search-container">
                 <form method="GET" action="vehicule.php">
                     <div class="filter-bar">
-                        <select name="category" class="filter-select">
+                        <select name="Location" class="filter-select" id="chooseLocation">
                             <option value="">Toutes les catégories</option>
-                            <option value="SUV">SUV</option>
+                            <?php foreach ($categorie_result as $categorie) { ?>
+                                <option value="<?= htmlspecialchars($categorie['id_categorie']) ?>">
+                                    <?= htmlspecialchars($categorie['nom']) ?>
+                                </option>
+                            <?php } ?>
+                            <!-- <option value="SUV">SUV</option>
                             <option value="Berline">Berline</option>
-                            <option value="Citadine">Citadine</option>
+                            <option value="Citadine">Citadine</option> -->
                         </select>
                         <input type="text" name="search" class="search-input" placeholder="Rechercher un véhicule...">
                         <button type="submit" class="btn btn-primary">Filtrer</button>
