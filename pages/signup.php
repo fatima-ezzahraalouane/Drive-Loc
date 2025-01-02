@@ -77,8 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         button {
             border-radius: 20px;
-            border: 1px solid #3498db;
-            background-color: #3498db;
+            border: 1px solid rgba(31, 46, 78, 1);
+            background-color: rgba(31, 46, 78, 1);
             color: #FFFFFF;
             font-size: 12px;
             font-weight: bold;
@@ -195,9 +195,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         .overlay {
-            background: #FF416C;
-            background: -webkit-linear-gradient(to right, #3498db, #008693);
-            background: linear-gradient(to right, #3498db, #008693);
+            background: rgba(31, 46, 78, 1);
+            background: -webkit-linear-gradient(to right, rgba(31, 46, 78, 1), rgb(255, 79, 79));
+            background: linear-gradient(to left, rgba(31, 46, 78, 1), rgb(255, 79, 79));
             background-repeat: no-repeat;
             background-size: cover;
             background-position: 0 0;
