@@ -20,10 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($authenticatedUser['id_role'] == 1) {
             // Rediriger vers le tableau de bord Admin
-            header('Location: ../views/dashboard_admin.php');
+            header('Location: ../pages/dashboard.php');
         } else {
             // Rediriger vers l'interface utilisateur
-            header('Location: ../views/interface_user.php');
+            header('Location: ../pages/accueil.php');
         }
         exit();
         // si des informations incorrects
