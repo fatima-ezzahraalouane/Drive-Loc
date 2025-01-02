@@ -35,7 +35,7 @@ class UserSite {
         if ($user && password_verify($password, $user['password'])) {
             return $user; // Retourne les détails de l'utilisateur si connexion réussie
         }
-        return false; // Connexion échouée
+        return false; // si Connexion échouée
     }
 }
 ?>
