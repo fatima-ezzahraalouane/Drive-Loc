@@ -250,68 +250,74 @@ try {
     </div>
     <!-- Header End -->
 
+    <!-- la pagination -->
     <!-- Car categories Start -->
     <div class="container-fluid categories py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
-            <h1 class="display-5 text-capitalize mb-3">Catégories de <span class="text-primary">Véhicules</span></h1>
-            <p class="mb-0">Chez Drive & Loc, nous offrons une gamme variée de véhicules pour répondre à tous vos besoins.</p>
-        </div>
+        <div class="container py-5">
+            <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
+                <h1 class="display-5 text-capitalize mb-3">Catégories de <span class="text-primary">Véhicules</span></h1>
+                <p class="mb-0">Chez Drive & Loc, nous offrons une gamme variée de véhicules pour répondre à tous vos besoins.</p>
+            </div>
 
-        <!-- Filter and Search Bar -->
-        <div class="filter-search-container mb-4">
-            <form method="GET" action="vehicule.php">
-                <div class="filter-bar">
-                    <select name="Location" class="filter-select" id="chooseLocation">
-                        <option value="">Toutes les catégories</option>
-                        <?php foreach ($categorie_result as $categorie) { ?>
-                            <option value="<?= htmlspecialchars($categorie['id_categorie']) ?>">
-                                <?= htmlspecialchars($categorie['nom']) ?>
-                            </option>
-                        <?php } ?>
-                    </select>
-                    <input type="text" name="search" class="search-input" placeholder="Rechercher un véhicule...">
-                    <button type="submit" class="btn btn-primary">Filtrer</button>
-                </div>
-            </form>
-        </div>
+            <!-- Filter and Search Bar -->
+            <div class="filter-search-container mb-4">
+                <form method="GET" action="vehicule.php">
+                    <div class="filter-bar">
+                        <select name="Location" class="filter-select" id="chooseLocation">
+                            <option value="">Toutes les catégories</option>
+                            <?php foreach ($categorie_result as $categorie) { ?>
+                                <option value="<?= htmlspecialchars($categorie['id_categorie']) ?>">
+                                    <?= htmlspecialchars($categorie['nom']) ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                        <input type="text" name="search" class="search-input" placeholder="Rechercher un véhicule...">
+                        <button type="submit" class="btn btn-primary">Filtrer</button>
+                    </div>
+                </form>
+            </div>
 
-        <!-- Vehicles Grid -->
-        <div class="row g-4">
-            <?php if (!empty($vehicules_result)) {
-                foreach ($vehicules_result as $vehicule) { ?>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="categories-item p-4">
-                            <div class="categories-img rounded-top">
-                                <img src="<?= htmlspecialchars($vehicule['imageUrl']) ?>" class="img-fluid w-100 rounded-top" alt="image vehicule">
-                            </div>
-                            <div class="categories-content rounded-bottom p-4 text-center">
-                                <h4><?= htmlspecialchars($vehicule['modele']) ?></h4>
-                                <h5 class="bg-white text-primary rounded-pill py-2 px-4 mb-3"><?= htmlspecialchars($vehicule['prix_par_jour']) ?> DH/Jour</h5>
-                                <a href="#" class="btn btn-primary rounded-pill d-flex justify-content-center py-2">Réservez maintenant</a>
+            <!-- Vehicles Grid -->
+            <div class="row g-4">
+                <?php if (!empty($vehicules_result)) {
+                    foreach ($vehicules_result as $vehicule) { ?>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="categories-item p-4">
+                                <div class="categories-img rounded-top">
+                                    <img src="<?= htmlspecialchars($vehicule['imageUrl']) ?>" class="img-fluid w-100 rounded-top" alt="image vehicule">
+                                </div>
+                                <div class="categories-content rounded-bottom p-4 text-center">
+                                    <h4><?= htmlspecialchars($vehicule['modele']) ?></h4>
+                                    <h5 class="bg-white text-primary rounded-pill py-2 px-4 mb-3"><?= htmlspecialchars($vehicule['prix_par_jour']) ?> DH/Jour</h5>
+                                    <a href="#" class="btn btn-primary rounded-pill d-flex justify-content-center py-2">Réservez maintenant</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-            <?php }
-            } else {
-                echo "<p class='text-danger text-center'>Aucun véhicule trouvé. Essayez une autre catégorie.</p>";
-            } ?>
-        </div>
+                <?php }
+                } else {
+                    echo "<p class='text-danger text-center'>Aucun véhicule trouvé. Essayez une autre catégorie.</p>";
+                } ?>
+            </div>
 
-        <!-- Pagination Controls -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center mt-4">
-                <li class="page-item"><a class="page-link" href="?page=1">Précédent</a></li>
-                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                    <li class="page-item <?= ($i == $current_page) ? 'active' : '' ?>">
-                        <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item <?= $current_page == 1 ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $current_page - 1 ?>">Précédent</a>
                     </li>
-                <?php } ?>
-                <li class="page-item"><a class="page-link" href="?page=<?= $total_pages ?>">Suivant</a></li>
-            </ul>
-        </nav>
+                    <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                        <li class="page-item <?= ($i == $current_page) ? 'active' : '' ?>">
+                            <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php } ?>
+                    <li class="page-item <?= $current_page == $total_pages ? 'disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $current_page + 1 ?>">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
     </div>
-</div>
 
     <!-- Car categories End -->
 
