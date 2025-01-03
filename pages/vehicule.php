@@ -250,6 +250,7 @@ try {
     </div>
     <!-- Header End -->
 
+    <!-- changer le contenu d'un commt -->
     <!-- la pagination -->
     <!-- Car categories Start -->
     <div class="container-fluid categories py-5">

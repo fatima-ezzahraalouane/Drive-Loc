@@ -1,3 +1,28 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] != 2) {
+    header('Location: signup.php');
+    exit();
+}
+
+require '../config/Database.php';
+
+$database = new Database();
+$conn = $database->getConnection();
+
+try {
+    $vehicule_query = "SELECT id_vehicule, modele FROM vehicule";
+    $vehicule_stmt = $conn->prepare($vehicule_query);
+    $vehicule_stmt->execute();
+    $vehicule_result = $vehicule_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Erreur lors de la récupération des véhicules : " . $e->getMessage());
+}
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -68,7 +93,7 @@
     <div class="container-fluid nav-bar sticky-top px-0 px-lg-4 py-2 py-lg-0">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <a href="" class="navbar-brand p-0">
+                <a href="accueil.php" class="navbar-brand p-0">
                     <!-- <h1 class="display-6 text-primary"><i class="fas fa-car-alt me-3"></i></i>Cental</h1> -->
                     <!-- <img src="img/logo.png" alt="Logo"> -->
                     <img src="../assets/img/loclogo-removebg-preview.png" alt="logo">
@@ -78,7 +103,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav mx-auto py-0">
-                        <a href="accueil.html" class="nav-item nav-link active">Accueil</a>
+                        <a href="accueil.php" class="nav-item nav-link active">Accueil</a>
+                        <a href="vehicule.php" class="nav-item nav-link">Véhicule</a>
                         <a href="about.html" class="nav-item nav-link">About</a>
                         <a href="service.html" class="nav-item nav-link">Service</a>
                         <a href="blog.html" class="nav-item nav-link">Blog</a>
@@ -118,15 +144,26 @@
                                 <div class="col-lg-6 fadeInLeft animated" data-animation="fadeInLeft" data-delay="1s" style="animation-delay: 1s;">
                                     <div class="bg-secondary rounded p-5">
                                         <h4 class="text-white mb-4">CONTINUER LA RÉSERVATION DE VOITURE</h4>
-                                        <form>
+                                        <form method="POST" action="#">
                                             <div class="row g-3">
                                                 <div class="col-12">
                                                     <select class="form-select" aria-label="Default select example">
-                                                        <option selected>Sélectionnez votre type de voiture</option>
-                                                        <option value="1">VW Golf VII</option>
-                                                        <option value="2">Audi A1 S-Line</option>
-                                                        <option value="3">Toyota Camry</option>
-                                                        <option value="4">BMW 320 ModernLine</option>
+                                                        <?php
+                                                        if (!$_GET['modele'] == null) {
+                                                            echo '<option value="' . $_GET['modele'] . ' selected">' . $_GET['modele'] . '</option>';
+                                                        } else {
+                                                            echo "<option selected>Sélectionnez votre type de voiture</option>";
+                                                        }
+                                                        $_GET['modele'] = null;
+                                                        ?>
+                                                        <?php foreach ($vehicule_result as $vehicule) { ?>
+                                                            <?php if ($vehicule['modele'] === $_GET['modele']) {
+                                                                continue;
+                                                            } ?>
+                                                            <option value="<?= htmlspecialchars($vehicule['id_vehicule']) ?>">
+                                                                <?= htmlspecialchars($vehicule['modele']) ?>
+                                                            </option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-12">
@@ -200,7 +237,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="carousel-item">
+                <!-- <div class="carousel-item">
                     <img src="../assets/img/carousel-1.jpg" class="img-fluid w-100" alt="First slide" />
                     <div class="carousel-caption">
                         <div class="container py-4">
@@ -227,15 +264,7 @@
                                                         <input class="form-control" type="text" placeholder="Entrez une ville ou un aéroport" aria-label="Entrez une ville ou un aéroport">
                                                     </div>
                                                 </div>
-                                                <!-- <div class="col-12">
-                                                        <a href="#" class="text-start text-white d-block mb-2">Need a different drop-off location?</a>
-                                                        <div class="input-group">
-                                                            <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
-                                                                <span class="fas fa-map-marker-alt"></span><span class="ms-1">Drop off</span>
-                                                            </div>
-                                                            <input class="form-control" type="text" placeholder="Enter a City or Airport" aria-label="Enter a City or Airport">
-                                                        </div>
-                                                    </div> -->
+                                                
                                                 <div class="col-12">
                                                     <div class="input-group">
                                                         <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
@@ -255,24 +284,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="col-12">
-                                                        <div class="input-group">
-                                                            <div class="d-flex align-items-center bg-light text-body rounded-start p-2">
-                                                                <span class="fas fa-calendar-alt"></span><span class="ms-1">Drop off</span>
-                                                            </div>
-                                                            <input class="form-control" type="date">
-                                                            <select class="form-select ms-3" aria-label="Default select example">
-                                                                <option selected>12:00AM</option>
-                                                                <option value="1">1:00AM</option>
-                                                                <option value="2">2:00AM</option>
-                                                                <option value="3">3:00AM</option>
-                                                                <option value="4">4:00AM</option>
-                                                                <option value="5">5:00AM</option>
-                                                                <option value="6">6:00AM</option>
-                                                                <option value="7">7:00AM</option>
-                                                            </select>
-                                                        </div>
-                                                    </div> -->
+                                                
                                                 <div class="col-12">
                                                     <button class="btn btn-light w-100 py-2">Réservez maintenant</button>
                                                 </div>
@@ -289,7 +301,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -331,7 +343,7 @@
                     </div>
                 </div>
                 <div class="col-lg-12 col-xl-4 wow fadeInUp" data-wow-delay="0.2s">
-                    <img src="img/features-img.png" class="img-fluid w-100" style="object-fit: cover;" alt="Img">
+                    <img src="../assets/img/features-img.png" class="img-fluid w-100" style="object-fit: cover;" alt="Img">
                 </div>
                 <div class="col-xl-4">
                     <div class="row gy-4 gx-0">
@@ -596,7 +608,7 @@
     <!-- Services End -->
 
     <!-- Car categories Start -->
-    <div class="container-fluid categories pb-5">
+    <!-- <div class="container-fluid categories pb-5">
         <div class="container pb-5">
             <div class="text-center mx-auto pb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 800px;">
                 <h1 class="display-5 text-capitalize mb-3">Vehicle <span class="text-primary">Categories</span></h1>
@@ -782,7 +794,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Car categories End -->
 
     <!-- Car Steps Start -->
@@ -1132,13 +1144,13 @@
         <div class="container">
             <div class="row g-4 align-items-center">
                 <div class="col-md-6 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>Your Site Name</a>, All right reserved.</span>
+                    <span class="text-body"><a href="#" class="border-bottom text-white"><i class="fas fa-copyright text-light me-2"></i>Div & Loc</a>, Tous droits réservés.</span>
                 </div>
                 <div class="col-md-6 text-center text-md-end text-body">
                     <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
                     <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
                     <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="border-bottom text-white" href="https://htmlcodex.com">HTML Codex</a>
+                    Conçu par <a class="border-bottom text-white" href="https://github.com/fatima-ezzahraalouane">Fatima-Ezzahra Alouane</a>
                 </div>
             </div>
         </div>
