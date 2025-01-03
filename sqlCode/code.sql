@@ -45,9 +45,12 @@ CREATE TABLE reservations (
     id_reservation INT NOT null AUTO_INCREMENT PRIMARY KEY,
     id_user INT NOT null,
     id_vehicule INT NOT null,
-    date_reser DATE NOT NULL,
-    heure_reser time not null,
-    lieu_reser VARCHAR(100) NOT null,
+    date_rama DATE NOT NULL,
+    heure_rama time not null,
+    lieu_rama VARCHAR(250) NOT null,
+    date_depo DATE NOT NULL,
+    heure_depo TIME NOT NULL,
+    lieu_depo VARCHAR(250) NOT NULL;
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_user) REFERENCES usersite(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE
