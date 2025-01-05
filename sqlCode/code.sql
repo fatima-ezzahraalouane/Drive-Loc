@@ -52,6 +52,7 @@ CREATE TABLE reservations (
     heure_depo TIME NOT NULL,
     lieu_depo VARCHAR(250) NOT NULL;
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('en attente', 'approuvée', 'refusée') DEFAULT 'en attente',
     FOREIGN KEY (id_user) REFERENCES usersite(id_user) ON DELETE CASCADE,
     FOREIGN KEY (id_vehicule) REFERENCES vehicule(id_vehicule) ON DELETE CASCADE
 );
